@@ -1,4 +1,4 @@
-Java client to upload and download files from a Panorama Server.  The client can also be used to upload and import a Skyline document to a Panorama server.
+**PanoramaClient** is a Java client to upload and download files from a Panorama Server.  The client can also be used to upload and import a Skyline document to a Panorama server.
 The main class is PanoramaClient.  There are 5 command-line usage modes:
 1. Downloads a single file: `--download OR -d`
 2. Download all files matching a file extension (optional) in a given folder: `--download_files OR -d`
