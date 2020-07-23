@@ -67,16 +67,28 @@ public class URLHelper
 
     private static URI createUri(String url) throws ClientException
     {
+        URI uri;
         try
         {
-            URL fullUrl = new URL(url);
-            URI uri = new URI(fullUrl.getProtocol(), fullUrl.getUserInfo(), fullUrl.getHost(), fullUrl.getPort(), fullUrl.getPath(), fullUrl.getQuery(), null);
-            return uri.normalize();
+            uri = new URI(url); // This will throw an exception if there are spaces in the string, for example
         }
-        catch (URISyntaxException | MalformedURLException e)
+        catch(URISyntaxException e)
+        {
+            try
+            {
+                URL fullUrl = new URL(url);
+                uri = new URI(fullUrl.getProtocol(), fullUrl.getUserInfo(), fullUrl.getHost(), fullUrl.getPort(), fullUrl.getPath(), fullUrl.getQuery(), null);
+            }
+            catch(Exception ex)
+            {
+                throw new ClientException("Error parsing url " + url, ex);
+            }
+        }
+        catch (Exception e)
         {
             throw new ClientException("Error parsing url " + url, e);
         }
+        return uri.normalize();
     }
 
     private static String getServerUrl(URI uri)

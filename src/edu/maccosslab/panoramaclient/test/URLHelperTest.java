@@ -25,6 +25,7 @@ public class URLHelperTest
         testValidWebdavUrl("http://localhost:8080//labkey//_webdav//home project//folder//@files", serverBaseUrl, "home project/folder", "");
         testValidWebdavUrl("http://localhost:8080//labkey//_webdav//home project//folder//@files/RawFiles//", serverBaseUrl, "home project/folder", "RawFiles");
         testValidWebdavUrl("http://localhost:8080//labkey//_webdav//home project//folder//%40files/RawFiles//test.raw", serverBaseUrl, "home project/folder", "RawFiles/test.raw");
+        testValidWebdavUrl("http://localhost:8080//labkey//_webdav//home%20project//%40files/", serverBaseUrl, "home project", "");
 
         testInValidWebdavUrl(serverBaseUrl, "Expect WebDAV URL path to start with _webdav. Found empty path in url 'http://localhost:8080/labkey'");
         testInValidWebdavUrl("http://localhost:8080/labkey/project/home/begin.view?", "Expect WebDAV URL path to start with _webdav. " +
