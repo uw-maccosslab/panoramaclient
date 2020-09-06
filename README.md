@@ -63,11 +63,13 @@ usage: -l [-e <arg>] [-k <arg>] [-o <arg>] -w
 ### Upload a file to a folder
 ```
 Upload a file
-usage: -u -f <arg> [-k <arg>] -w <arg>
+usage: java -jar panoramaclient.jar -u -f <arg> -w <arg> [-k <arg>] [-c]
  -f,--source_file_path <arg>   Path of the file to be uploaded
- -k,--api_key <arg>            Panorama server API key
  -w,--webdav_url <arg>         WebDav URL of the folder on the Panorama
                                server
+ -k,--api_key <arg>            Panorama server API key
+ -c,--create_dir               Create the target directory if it does not
+                               exist
 ```
 
 A **_WebDAV URL_** is required for downloading, uploading and getting a list of files in a folder on Panorama. 

@@ -2,6 +2,7 @@ package edu.maccosslab.panoramaclient;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URIBuilder;
@@ -69,33 +70,73 @@ public abstract class WebDavCommand<ResponseType extends CommandResponse> extend
         }
         path.append(pathAfterFileRoot);
 
-        URI toReturn = (new URIBuilder(uri)).setPath(path.toString()).build();
-        return toReturn;
+        return (new URIBuilder(uri)).setPath(path.toString()).build();
     }
 
-    abstract String pathAfterFileRoot();
+    public ResponseType executeCmd(Connection connection, String folderPath) throws IOException, CommandException, ClientException
+    {
+        try
+        {
+            return super.execute(connection, folderPath);
+        }
+        catch(CommandException e)
+        {
+            ClientException ex = getIfPermissionsException(folderPath, e);
+            if(ex != null) throw ex;
+            throw e;
+        }
+    }
 
-    public static class Upload extends WebDavCommand
+    public static ClientException getIfPermissionsException(String folderPath, CommandException e)
+    {
+        if (e.getStatusCode() == 401)
+        {
+            return new ClientException("User could not be authenticated with the given credentials. Error message: " + e.getMessage());
+        }
+        else if (e.getStatusCode() == 403)
+        {
+            return new ClientException("User does not have the required permissions in the folder '" + folderPath + "'. Error message: " + e.getMessage());
+        }
+        return null;
+    }
+
+    protected Command.Response executeGetResponse(Connection connection, String folderPath) throws CommandException, IOException, ClientException
+    {
+        try
+        {
+            return super._execute(connection, folderPath);
+        }
+        catch(CommandException e)
+        {
+            ClientException ex = getIfPermissionsException(folderPath, e);
+            if(ex != null) throw ex;
+            throw e;
+        }
+    }
+
+    abstract String getFwpPath();
+    String pathAfterFileRoot()
+    {
+        String _folderPath = getFwpPath();
+        return (_folderPath != null && _folderPath.trim().length() > 0) ? _folderPath.trim() : "";
+    }
+
+    public static class Upload extends WebDavCommand<CommandResponse>
     {
         private String _sourceFilePath;
         private String _folderPath; // Part of the path after the file root. e.g sub-folder path in the FWP.
 
-        public CommandResponse upload(Connection connection, String containerPath, String sourceFilePath) throws IOException, CommandException
-        {
-            return upload(connection, containerPath, null, sourceFilePath);
-        }
-
-        public CommandResponse upload(Connection connection, String containerPath, String folderPath, String sourceFilePath) throws IOException, CommandException
+        public CommandResponse upload(Connection connection, String containerPath, String folderPath, String sourceFilePath) throws IOException, CommandException, ClientException
         {
             this._sourceFilePath = sourceFilePath;
             _folderPath = folderPath;
-            return super.execute(connection, containerPath);
+            return super.executeCmd(connection, containerPath);
         }
 
         @Override
-        String pathAfterFileRoot()
+        String getFwpPath()
         {
-            return (_folderPath != null && _folderPath.trim().length() > 0) ? _folderPath.trim() : "";
+            return _folderPath;
         }
 
         @Override
@@ -108,21 +149,21 @@ public abstract class WebDavCommand<ResponseType extends CommandResponse> extend
         }
     }
 
-    public static class Download extends WebDavCommand
+    public static class Download extends WebDavCommand<CommandResponse>
     {
         private String _sourceFile;
 
         @Override
-        String pathAfterFileRoot()
+        String getFwpPath()
         {
-            return '/' + _sourceFile;
+            return _sourceFile;
         }
 
-        public CommandResponse download(Connection connection, String containerPath, String sourceFile, String targetFilePath) throws CommandException, IOException
+        public CommandResponse download(Connection connection, String containerPath, String sourceFile, String targetFilePath) throws CommandException, IOException, ClientException
         {
             _sourceFile = sourceFile;
 
-            Response response = super._execute(connection, containerPath);
+            Response response = super.executeGetResponse(connection, containerPath);
             try (BufferedInputStream is = new BufferedInputStream(response.getInputStream()))
             {
                 try (BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream(new File(targetFilePath))))
@@ -143,21 +184,16 @@ public abstract class WebDavCommand<ResponseType extends CommandResponse> extend
     {
         private String _folderPath; // Part of the path after the file root. e.g sub-folder path in the FWP.
 
-        public ListFilesResponse list(Connection connection, String containerPath) throws IOException, CommandException
-        {
-            return list(connection, containerPath, null);
-        }
-
-        public ListFilesResponse list(Connection connection, String containerPath, String folderPath) throws IOException, CommandException
+        public ListFilesResponse list(Connection connection, String containerPath, String folderPath) throws IOException, CommandException, ClientException
         {
             _folderPath = folderPath;
-            return execute(connection, containerPath);
+            return super.executeCmd(connection, containerPath);
         }
 
         @Override
-        String pathAfterFileRoot()
+        String getFwpPath()
         {
-            return (_folderPath != null && _folderPath.trim().length() > 0) ? _folderPath.trim() : "";
+            return _folderPath;
         }
 
         @Override
@@ -205,7 +241,7 @@ public abstract class WebDavCommand<ResponseType extends CommandResponse> extend
                 for (Map<String, Object> fileDetails: fileList)
                 {
                     Object isCollection = fileDetails.get("collection");
-                    if(isCollection != null && Boolean.valueOf(isCollection.toString()))
+                    if(isCollection != null && Boolean.parseBoolean(isCollection.toString()))
                     {
                         // Ignore directories
                         continue;
@@ -214,6 +250,61 @@ public abstract class WebDavCommand<ResponseType extends CommandResponse> extend
                 }
             }
             return _fileNames;
+        }
+    }
+
+    public static class CreateDir extends WebDavCommand<CommandResponse>
+    {
+        private String _folderPath; // Part of the path after the file root. e.g sub-folder path in the FWP.
+
+        public CommandResponse create(Connection connection, String containerPath, String folderPath) throws IOException, CommandException, ClientException
+        {
+            _folderPath = folderPath;
+            return super.executeCmd(connection, containerPath);
+        }
+
+        @Override
+        String getFwpPath()
+        {
+            return _folderPath;
+        }
+
+        @Override
+        protected HttpUriRequest createRequest(URI uri)
+        {
+            HttpEntityEnclosingRequestBase request = new HttpEntityEnclosingRequestBase()
+            {
+                @Override
+                public String getMethod()
+                {
+                    return "MKCOL";
+                }
+            };
+            request.setURI(uri);
+            return request;
+        }
+    }
+
+    public static class CheckWebdavDirExists extends WebDavCommand<CommandResponse>
+    {
+        private String _folderPath; // Part of the path after the file root. e.g sub-folder path in the FWP.
+
+        public CommandResponse check(Connection connection, String containerPath, String folderPath) throws IOException, CommandException, ClientException
+        {
+            _folderPath = folderPath;
+            return super.executeCmd(connection, containerPath);
+        }
+
+        @Override
+        String getFwpPath()
+        {
+            return _folderPath;
+        }
+
+        @Override
+        protected HttpUriRequest createRequest(URI uri)
+        {
+           return new HttpGet(uri);
         }
     }
 }

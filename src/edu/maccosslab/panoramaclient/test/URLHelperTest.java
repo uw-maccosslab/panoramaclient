@@ -16,6 +16,31 @@ public class URLHelperTest
         testBuildWebdavUrlParts();
     }
 
+    @Test
+    public void testGetWebdavPathParts() throws ClientException
+    {
+        WebdavUrlParts webdavUrl = URLHelper.buildWebdavUrlParts("http://localhost:8080/labkey/_webdav/home/@files/");
+        Assert.assertEquals(0, webdavUrl.getWebdavPathParts().size());
+
+        webdavUrl = URLHelper.buildWebdavUrlParts("http://localhost:8080/labkey/_webdav/home/@files/Test%20Folder");
+        var pathParts = webdavUrl.getWebdavPathParts();
+        Assert.assertEquals(1, pathParts.size());
+        Assert.assertEquals("Test Folder", pathParts.get(0));
+
+        webdavUrl = URLHelper.buildWebdavUrlParts("http://localhost:8080/labkey/_webdav/home/@files/Test%20Folder/test1");
+        pathParts = webdavUrl.getWebdavPathParts();
+        Assert.assertEquals(2, pathParts.size());
+        Assert.assertEquals("Test Folder/test1", pathParts.get(1));
+        Assert.assertEquals("Test Folder", pathParts.get(0));
+
+        webdavUrl = URLHelper.buildWebdavUrlParts("http://localhost:8080/labkey/_webdav/home/@files/Test%20Folder/test%201/test%202");
+        pathParts = webdavUrl.getWebdavPathParts();
+        Assert.assertEquals(3, pathParts.size());
+        Assert.assertEquals("Test Folder/test 1/test 2", pathParts.get(2));
+        Assert.assertEquals("Test Folder/test 1", pathParts.get(1));
+        Assert.assertEquals("Test Folder", pathParts.get(0));
+    }
+
     private void testBuildWebdavUrlParts()
     {
         String serverBaseUrl = "http://localhost:8080/labkey";
@@ -44,15 +69,15 @@ public class URLHelperTest
         testValidLabKeyUrl("http://localhost:8080//labkey//project//home project//folder//begin.view?", serverBaseUrl, "home project/folder");
 
         testInValidLabKeyUrl(serverBaseUrl, "Path is empty");
-        testInValidLabKeyUrl("http://localhost:8080/labkey/begin.view?", "Cannot parse container path from \'begin.view\'");
-        testInValidLabKeyUrl("http://localhost:8080/labkey/project/begin.view?", "Cannot remove controller name from container path \'project\'");
+        testInValidLabKeyUrl("http://localhost:8080/labkey/begin.view?", "Cannot parse container path from 'begin.view'");
+        testInValidLabKeyUrl("http://localhost:8080/labkey/project/begin.view?", "Cannot remove controller name from container path 'project'");
 
         // Test new pattern URLs
         testValidLabKeyUrl("http://localhost:8080/labkey/home/project-begin.view?", serverBaseUrl, "home");
         testValidLabKeyUrl("http://localhost:8080//labkey//home project//project-begin.view?", serverBaseUrl, "home project");
         testValidLabKeyUrl("http://localhost:8080//labkey//home project//folder//project-begin.view?", serverBaseUrl, "home project/folder");
 
-        testInValidLabKeyUrl("http://localhost:8080/labkey/project-begin.view?", "Cannot parse container path from \'project-begin.view\'");
+        testInValidLabKeyUrl("http://localhost:8080/labkey/project-begin.view?", "Cannot parse container path from 'project-begin.view'");
     }
 
     private void testValidLabKeyUrl(String url, String serverUrl, String containerPath)

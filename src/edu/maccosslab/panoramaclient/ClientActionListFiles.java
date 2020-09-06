@@ -102,7 +102,7 @@ public class ClientActionListFiles extends ClientAction<ActionOptions.ListFiles>
                 throw new ClientException("Received HTTP status code " + response.getStatusCode());
             }
             List<String> fileNames = response.getFiles();
-            if(extension == null || extension.trim().length() == 0)
+            if(extension == null || extension.trim().length() == 0 || "*".equalsIgnoreCase(extension))
             {
                 return fileNames;
             }

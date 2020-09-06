@@ -143,7 +143,15 @@ public class PanoramaClient
         }
         catch (ClientException e)
         {
-            LOG.error(e.getMessage(), e);
+            if(e.getCause() != null)
+            {
+                LOG.error(e.getMessage(), e);
+            }
+            else
+            {
+                LOG.error(e.getMessage());
+            }
+
             System.exit(1);
         }
     }

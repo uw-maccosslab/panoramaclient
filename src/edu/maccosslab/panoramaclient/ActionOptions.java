@@ -86,6 +86,7 @@ public abstract class ActionOptions
     public static class Upload extends WebdavActionOptions
     {
         private String srcFilePath;
+        private boolean createTargetDir;
 
         public String getSrcFilePath()
         {
@@ -95,6 +96,16 @@ public abstract class ActionOptions
         public void setSrcFilePath(String srcFilePath)
         {
             this.srcFilePath = srcFilePath;
+        }
+
+        public boolean isCreateTargetDir()
+        {
+            return createTargetDir;
+        }
+
+        public void setCreateTargetDir(boolean createTargetDir)
+        {
+            this.createTargetDir = createTargetDir;
         }
 
         @Override

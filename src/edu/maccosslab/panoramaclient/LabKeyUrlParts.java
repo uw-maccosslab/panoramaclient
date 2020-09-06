@@ -1,7 +1,5 @@
 package edu.maccosslab.panoramaclient;
 
-import java.net.URL;
-
 public class LabKeyUrlParts
 {
     private final String _serverUrl;

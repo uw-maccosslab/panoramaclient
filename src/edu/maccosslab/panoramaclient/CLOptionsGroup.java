@@ -166,6 +166,7 @@ public abstract class CLOptionsGroup<T extends ActionOptions>
         private static final String description = "Upload a file";
         private static Option uploadFileOpt = Option.builder("u").required().hasArg(false).longOpt("upload").desc(description).build();
         private static Option srcFilePathOption = Option.builder("f").longOpt("source_file_path").hasArg(true).required(true).desc("Path of the file to be uploaded").build();
+        private static Option createDirIfNotExistsOption = Option.builder("c").longOpt("create_dir").hasArg(false).required(false).desc("Create the target directory if it does not exist").build();
 
         public UploadFile()
         {
@@ -176,6 +177,7 @@ public abstract class CLOptionsGroup<T extends ActionOptions>
         public Options getSubOptions()
         {
             Options options = new Options();
+            options.addOption(createDirIfNotExistsOption);
             options.addOption(srcFilePathOption);
             options.addOption(webdavFolderOption);
             options.addOption(apiKeyOption);
@@ -187,6 +189,7 @@ public abstract class CLOptionsGroup<T extends ActionOptions>
         {
             CommandLine cl = parseCommandLine(args);
             ActionOptions.Upload opts = new ActionOptions.Upload();
+            opts.setCreateTargetDir(cl.hasOption(createDirIfNotExistsOption.getOpt()));
             opts.setSrcFilePath(cl.getOptionValue(srcFilePathOption.getOpt()));
             opts.setWebdavUrl(cl.getOptionValue(webdavFolderOption.getOpt()));
             opts.setApiKey(cl.getOptionValue(apiKeyOption.getOpt()));
