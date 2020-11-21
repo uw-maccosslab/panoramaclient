@@ -11,7 +11,7 @@ import java.io.IOException;
 public class ClientActionUpload extends ClientAction<ActionOptions.Upload>
 {
     @Override
-    public void doAction(ActionOptions.Upload options) throws ClientException
+    public boolean doAction(ActionOptions.Upload options) throws ClientException
     {
         var webdavUrlParts = ClientAction.getWebdavUrl(options.getWebdavUrl());
 
@@ -50,6 +50,7 @@ public class ClientActionUpload extends ClientAction<ActionOptions.Upload>
         }
         uploadFile(webdavUrlParts, srcFilePath, connection);
         LOG.info("File uploaded");
+        return true;
     }
 
     private boolean containerExists(WebdavUrlParts webdavUrlParts, Connection connection) throws ClientException

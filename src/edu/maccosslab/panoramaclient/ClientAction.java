@@ -11,7 +11,7 @@ public abstract class ClientAction<T extends ActionOptions>
 {
     static final Logger LOG = Logger.getLogger(ClientAction.class);
 
-    public abstract void doAction(T commandOptions) throws ClientException;
+    public abstract boolean doAction(T commandOptions) throws ClientException;
 
     static Connection getConnection(WebdavUrlParts webdavUrlParts, String apiKey) throws ClientException
     {

@@ -17,7 +17,7 @@ import java.util.Map;
 public class ClientActionImportSkyDoc extends ClientAction<ActionOptions.ImportSkyDoc>
 {
     @Override
-    public void doAction(ActionOptions.ImportSkyDoc options) throws ClientException
+    public boolean doAction(ActionOptions.ImportSkyDoc options) throws ClientException
     {
         String skyDocPath = options.getSkyDocPath();
 
@@ -46,6 +46,7 @@ public class ClientActionImportSkyDoc extends ClientAction<ActionOptions.ImportS
         Connection connection = getConnection(labKeyUrlParts.getServerUrl(), options.getApiKey());
 
         uploadAndImport(labKeyUrlParts.getServerUrl(), labKeyUrlParts.getContainerPath(), options.getSkyDocPath(), connection);
+        return true;
     }
 
     void uploadAndImport(String serverUri, String containerPath, String skyZipPath, Connection connection) throws ClientException

@@ -10,7 +10,7 @@ import java.io.IOException;
 public class ClientActionDownload extends ClientAction<ActionOptions.Download>
 {
     @Override
-    public void doAction(ActionOptions.Download options) throws ClientException
+    public boolean doAction(ActionOptions.Download options) throws ClientException
     {
         WebdavUrlParts webdavUrlParts = ClientAction.getWebdavUrl(options.getWebdavUrl());
 
@@ -32,13 +32,9 @@ public class ClientActionDownload extends ClientAction<ActionOptions.Download>
             }
         }
 
-        downloadFile(webdavUrlParts, options.getApiKey(), downloadDir);
-    }
-
-    private void downloadFile(WebdavUrlParts webdavUrlParts, String apiKey, String targetFolder) throws ClientException
-    {
-        Connection connection = getConnection(webdavUrlParts, apiKey);
-        downloadFile(webdavUrlParts.getContainerPath(), webdavUrlParts.getPathInFwp(), targetFolder, connection);
+        Connection connection = getConnection(webdavUrlParts, options.getApiKey());
+        downloadFile(webdavUrlParts.getContainerPath(), webdavUrlParts.getPathInFwp(), downloadDir, connection);
+        return true;
     }
 
     void downloadFile(String containerPath, String sourceFilePath, String targetFolder, Connection connection) throws ClientException

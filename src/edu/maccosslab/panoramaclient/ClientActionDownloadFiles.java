@@ -8,7 +8,7 @@ import java.util.List;
 public class ClientActionDownloadFiles extends ClientAction<ActionOptions.DownloadFiles>
 {
     @Override
-    public void doAction(ActionOptions.DownloadFiles options) throws ClientException
+    public boolean doAction(ActionOptions.DownloadFiles options) throws ClientException
     {
         WebdavUrlParts webdavUrlParts = ClientAction.getWebdavUrl(options.getWebdavUrl());
 
@@ -30,29 +30,19 @@ public class ClientActionDownloadFiles extends ClientAction<ActionOptions.Downlo
             }
         }
 
-        downloadFiles(webdavUrlParts, downloadDir, options.getExtension(), options.getApiKey());
+        Connection connection = getConnection(webdavUrlParts, options.getApiKey());
+        return downloadFiles(webdavUrlParts.getContainerPath(), webdavUrlParts.getPathInFwp(), downloadDir, options.getExtension(), connection);
     }
 
-    public void downloadFiles(WebdavUrlParts webdavUrlParts, String targetFolder, String extension, String apiKey) throws ClientException
-    {
-        Connection connection = getConnection(webdavUrlParts, apiKey);
-        downloadFiles(webdavUrlParts.getContainerPath(), webdavUrlParts.getPathInFwp(), targetFolder, extension, connection);
-    }
-
-    public void downloadFiles(String containerPath, String fwpFolderPath, String targetFolder, String extension, Connection connection) throws ClientException
+    public boolean downloadFiles(String containerPath, String fwpFolderPath, String targetFolder, String extension, Connection connection) throws ClientException
     {
         LOG.info("Files will be downloaded to " + targetFolder);
 
         ClientActionListFiles cmdListFiles = new ClientActionListFiles();
         List<String> fileNames = cmdListFiles.listFiles(containerPath, fwpFolderPath, extension, connection);
-        if(fileNames != null)
+        if(fileNames != null && fileNames.size() > 0)
         {
-            if(fileNames.size() == 0)
-            {
-                LOG.info("No files " + (extension != null ? "matching the extension \"" + extension : "\"") + " found in containerPath " + containerPath + " and FWP folder " + fwpFolderPath );
-            }
-
-            String pathStringForMsg = " container " + containerPath + (fwpFolderPath.length() > 0 ? " and FWP folder " + fwpFolderPath : "");
+            String pathStringForMsg = " container '" + containerPath + "'" + (fwpFolderPath.length() > 0 ? " and FWP folder '" + fwpFolderPath + "'" : "");
             LOG.info("Found " + fileNames.size() + " files " + (extension != null ? "matching the extension \"" + extension + "\"" : "") + " in " + pathStringForMsg);
             ClientActionDownload cmdDownload = new ClientActionDownload();
             for(String sourceFile: fileNames)
@@ -60,6 +50,12 @@ public class ClientActionDownloadFiles extends ClientAction<ActionOptions.Downlo
                 String sourceFilePath = fwpFolderPath.length() > 0 ? fwpFolderPath + "/" + sourceFile : sourceFile;
                 cmdDownload.downloadFile(containerPath, sourceFilePath, targetFolder, connection);
             }
+            return true;
+        }
+        else
+        {
+            LOG.warn("No files " + (extension != null ? "matching the extension \"" + extension + "\"" : "") + " found in containerPath '" + containerPath + "' and FWP folder '" + fwpFolderPath + "'");
+            return false;
         }
     }
 }

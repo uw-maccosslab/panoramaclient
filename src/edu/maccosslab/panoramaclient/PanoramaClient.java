@@ -139,7 +139,11 @@ public class PanoramaClient
 
         try
         {
-            actionOpts.getAction().doAction(actionOpts);
+            if(!actionOpts.getAction().doAction(actionOpts))
+            {
+                LOG.error("Action was unsuccessful");
+                System.exit(2);
+            };
         }
         catch (ClientException e)
         {

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class ClientActionListFiles extends ClientAction<ActionOptions.ListFiles>
 {
     @Override
-    public void doAction(ActionOptions.ListFiles options) throws ClientException
+    public boolean doAction(ActionOptions.ListFiles options) throws ClientException
     {
         WebdavUrlParts webdavUrlParts = ClientAction.getWebdavUrl(options.getWebdavUrl());
 
@@ -21,37 +21,21 @@ public class ClientActionListFiles extends ClientAction<ActionOptions.ListFiles>
         String extension = options.getExtension();
 
         String outputFilePath = options.getOutputFile();
-        File outputFile = null;
-        if(outputFilePath != null)
+        File outputFile = outputFilePath != null ? new File(outputFilePath) : null;
+
+        Connection connection = getConnection(webdavUrlParts, apiKey);
+        List<String> files = listFiles(webdavUrlParts.getContainerPath(), webdavUrlParts.getPathInFwp(), extension, connection);
+        if(files.size() > 0)
         {
-            outputFile = new File(outputFilePath);
-            try
-            {
-                if(!outputFile.createNewFile())
-                {
-                    throw new ClientException("File already exists " + outputFilePath);
-                }
-            }
-            catch (IOException | SecurityException e)
-            {
-                throw new ClientException("Cannot create new file " + outputFilePath, e);
-            }
-
-            try
-            {
-                if (!outputFile.canWrite())
-                {
-                    throw new ClientException("Cannot write to file " + outputFilePath);
-                }
-            }
-            catch (SecurityException e)
-            {
-                throw new ClientException("Cannot write to file " + outputFilePath, e);
-            }
+            printFileList(files, outputFile);
+            return true;
         }
-
-        List<String> files = listFiles(webdavUrlParts, extension, apiKey);
-        printFileList(files, outputFile);
+        else
+        {
+            LOG.warn("No files " + (extension != null ? "matching the extension \"" + extension + "\"" : "") + " found in containerPath '"
+                    + webdavUrlParts.getContainerPath() + "' and FWP folder '" + webdavUrlParts.getPathInFwp() + "'");
+            return false;
+        }
     }
 
     private void printFileList(List<String> files, File outputFile) throws ClientException
@@ -81,11 +65,6 @@ public class ClientActionListFiles extends ClientAction<ActionOptions.ListFiles>
         }
     }
 
-    List<String> listFiles(WebdavUrlParts webdavUrlParts, String extension, String apiKey) throws ClientException
-    {
-        Connection connection = getConnection(webdavUrlParts, apiKey);
-        return listFiles(webdavUrlParts.getContainerPath(), webdavUrlParts.getPathInFwp(), extension, connection);
-    }
 
     List<String> listFiles(String containerPath, String fwpFolderPath, String extension, Connection connection) throws ClientException
     {
