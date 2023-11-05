@@ -85,7 +85,7 @@ public class ClientActionUpload extends ClientAction<ActionOptions.Upload>
 
     private boolean webdavDirExists(WebdavUrlParts webdavUrlParts, Connection connection) throws ClientException
     {
-        WebDavCommand.CheckWebdavDirExists cmd = new WebDavCommand.CheckWebdavDirExists();
+        WebDavCommand.CheckWebdavPathExists cmd = new WebDavCommand.CheckWebdavPathExists();
         try
         {
             CommandResponse response = cmd.check(connection, webdavUrlParts.getContainerPath(), webdavUrlParts.getPathInFwp());

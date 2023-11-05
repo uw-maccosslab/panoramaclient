@@ -16,6 +16,7 @@ public class CLParserTest
         testFailParsingMainOption(client, new String[] {"-x"}, "Unrecognized option: -x");
 
         testParseDownloadFile(client);
+        testParseImportSkylineDoc(client);
     }
 
     private void testParseDownloadFile(PanoramaClient client)
@@ -67,5 +68,30 @@ public class CLParserTest
             return;
         }
         Assert.fail("Expected exception " + errMsg);
+    }
+
+    private void testParseImportSkylineDoc(PanoramaClient client)
+    {
+        CLOptionsGroup optionsGroup = null;
+        try
+        {
+            String importSkylineDocOpt = CLOptionsGroup.ImportSkyDoc.importSkyDocOpt.getLongOpt();
+            optionsGroup = client.getMainOptionsGroup(new String[] {"--" + importSkylineDocOpt});
+            Assert.assertTrue("Expected instance of CLOptions.ImportSkylineDoc", optionsGroup instanceof CLOptionsGroup.ImportSkyDoc);
+        }
+        catch (ParseException e)
+        {
+            Assert.fail("Should not have failed." + e.getMessage());
+        }
+
+        testFailParsingSubOptions(optionsGroup, new String[] {}, "Missing required option: " + CLOptionsGroup.ImportSkyDoc.panoramaFolderUrl.getOpt());
+        testFailParsingSubOptions(optionsGroup, new String[] {"-p"}, "Missing argument for option: " + CLOptionsGroup.ImportSkyDoc.panoramaFolderUrl.getOpt());
+        testFailParsingSubOptions(optionsGroup, new String[] {"-p", "https://localhost:8080", "--not_an_opt"}, "Unrecognized option: --not_an_opt");
+        testFailParsingSubOptions(optionsGroup, new String[] {"-p", "https://localhost:8080", "-s"}, "Missing argument for option: s");
+        testFailParsingSubOptions(optionsGroup, new String[] {"-p", "https://localhost:8080", "-t"}, "Missing argument for option: t");
+        testFailParsingSubOptions(optionsGroup, new String[] {"-p", "https://localhost:8080", "-t", "my_remote_sky_doc.sky.zip", "-s", "C://Documents/my_sky_doc.sky.zip"},
+                "Please specify a value for ONLY one of the options: -s or -t.");
+        testFailParsingSubOptions(optionsGroup, new String[] {"-p", "https://localhost:8080"},
+                "Please specify a value for one of the options: -s or -t.");
     }
 }

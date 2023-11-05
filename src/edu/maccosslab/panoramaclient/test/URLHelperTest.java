@@ -33,12 +33,20 @@ public class URLHelperTest
         Assert.assertEquals("Test Folder/test1", pathParts.get(1));
         Assert.assertEquals("Test Folder", pathParts.get(0));
 
-        webdavUrl = URLHelper.buildWebdavUrlParts("http://localhost:8080/labkey/_webdav/home/@files/Test%20Folder/test%201/test%202");
+        webdavUrl = URLHelper.buildWebdavUrlParts("http://localhost:8080/labkey/_webdav/home/%40files/Test%20Folder/test%201/test%202");
         pathParts = webdavUrl.getWebdavPathParts();
         Assert.assertEquals(3, pathParts.size());
         Assert.assertEquals("Test Folder/test 1/test 2", pathParts.get(2));
         Assert.assertEquals("Test Folder/test 1", pathParts.get(1));
         Assert.assertEquals("Test Folder", pathParts.get(0));
+
+        webdavUrl = URLHelper.buildWebdavUrlParts("http://localhost:8080/labkey/_webdav/home/@files/Test%20Folder/test 1/test 2");
+        pathParts = webdavUrl.getWebdavPathParts();
+        Assert.assertEquals(3, pathParts.size());
+        Assert.assertEquals("Test%20Folder/test 1/test 2", pathParts.get(2));
+        Assert.assertEquals("Test%20Folder/test 1", pathParts.get(1));
+        Assert.assertEquals("Test%20Folder", pathParts.get(0));
+
     }
 
     private void testBuildWebdavUrlParts()

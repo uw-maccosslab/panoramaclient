@@ -84,14 +84,24 @@ link address.
    
 ### Upload and import a Skyline document in a folder
 ```
-Upload and import a Skyline document
-usage: -i [-k <arg>] -p <arg> -s <arg>
+Import a Skyline document
+usage: -i -p <arg> [-k <arg>] [-s <arg>] [-t <arg>] [-w <arg>]
  -k,--api_key <arg>               Panorama server API key
  -p,--panorama_folder_url <arg>   URL of the folder on the Panorama server
- -s,--skydoc_path <arg>           Path of the Skyline document to be
-                                  uploaded and imported
+ -s,--skydoc_path <arg>           Path of the Skyline document to be uploaded and imported. 
+                                  Only one of -s or -t should be specified.
+ -t,--skydoc_name_remote <arg>    Name of the Skyline document to import.
+                                  Document (sky.zip) must already exist in the Panorama folder. 
+                                  Only one of -s or -t should be specified.
+ -w,--webdav_url <arg>            WebDav URL of a directory in the Panorama folder. 
+                                  If used with the -s option this is the directory where the
+                                  Skyline document will be uploaded. 
+                                  If used with the -t option this is the directory that contains 
+                                  the Skyline document. 
+                                  This option is not required if the directory is the Panorama folder
+                                  root (e.g. https://panoramaweb.org/_webdav/MyProject/MyFolder/@files)
 ```
 
-The URL required for Skyline document upload and import is not a WebDAV URL. To get this URL navigate to the home page of the folder
-where the document should be imported and simply copy the URL from the browser's address bar.
+The Panorama folder URL (-p argument) required for Skyline document import is not a WebDAV URL. To get this URL navigate
+to the home page of the folder where the document should be imported and copy the URL from the browser's address bar.
 

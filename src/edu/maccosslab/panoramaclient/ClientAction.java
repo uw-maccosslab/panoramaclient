@@ -22,7 +22,7 @@ public abstract class ClientAction<T extends ActionOptions>
     {
         if(apiKey != null && apiKey.trim().length() > 0)
         {
-            return new Connection(serverUri.toString(), new ApiKeyCredentialsProvider(apiKey));
+            return new Connection(serverUri, new ApiKeyCredentialsProvider(apiKey));
         }
         else
         {
@@ -34,7 +34,7 @@ public abstract class ClientAction<T extends ActionOptions>
     {
         try
         {
-            return new Connection(serverUri.toString(), new NetrcCredentialsProvider(serverUri));
+            return new Connection(serverUri, new NetrcCredentialsProvider(serverUri));
         }
         catch (IOException e)
         {

@@ -59,4 +59,10 @@ public class WebdavUrlParts extends LabKeyUrlParts
     {
         return "'" + combineParts() + "'";
     }
+
+    public WebdavUrlParts appendToWebdavPath(String toAppend)
+    {
+        String pathInFwp = "".equals(_pathInFwp) ? toAppend : _pathInFwp + "/" + toAppend;
+        return new WebdavUrlParts(getServerUrl(), getContainerPath(), pathInFwp);
+    }
 }

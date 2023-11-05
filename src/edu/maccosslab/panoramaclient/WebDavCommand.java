@@ -40,7 +40,7 @@ public abstract class WebDavCommand<ResponseType extends CommandResponse> extend
     @Override
     protected URI getActionUrl(Connection connection, String folderPath) throws URISyntaxException
     {
-        URI uri = new URI(connection.getBaseUrl().replace('\\', '/'));
+        URI uri = new URI(connection.getBaseURI().toString().replace('\\', '/'));
         StringBuilder path = new StringBuilder(uri.getPath() != null && !"".equals(uri.getPath()) ? uri.getPath() : "/");
         String controller = this.getControllerName();
         if (controller.charAt(0) != '/' && path.charAt(path.length() - 1) != '/') {
@@ -166,7 +166,7 @@ public abstract class WebDavCommand<ResponseType extends CommandResponse> extend
             Response response = super.executeGetResponse(connection, containerPath);
             try (BufferedInputStream is = new BufferedInputStream(response.getInputStream()))
             {
-                try (BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream(new File(targetFilePath))))
+                try (BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream(targetFilePath)))
                 {
                     byte[] bytes = new byte[8096];
                     int bytesRead;
@@ -285,7 +285,7 @@ public abstract class WebDavCommand<ResponseType extends CommandResponse> extend
         }
     }
 
-    public static class CheckWebdavDirExists extends WebDavCommand<CommandResponse>
+    public static class CheckWebdavPathExists extends WebDavCommand<CommandResponse>
     {
         private String _folderPath; // Part of the path after the file root. e.g sub-folder path in the FWP.
 

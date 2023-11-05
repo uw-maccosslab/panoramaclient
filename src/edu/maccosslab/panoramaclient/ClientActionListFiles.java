@@ -68,7 +68,7 @@ public class ClientActionListFiles extends ClientAction<ActionOptions.ListFiles>
 
     List<String> listFiles(String containerPath, String fwpFolderPath, String extension, Connection connection) throws ClientException
     {
-        String pathStringForMsg = " container \'" + containerPath + "\'" + (fwpFolderPath.length() > 0 ? " and FWP folder \'" + fwpFolderPath + "\'"
+        String pathStringForMsg = " container '" + containerPath + "'" + (fwpFolderPath.length() > 0 ? " and FWP folder '" + fwpFolderPath + "'"
                 : "");
         LOG.info("Getting a list of files in" + pathStringForMsg);
 

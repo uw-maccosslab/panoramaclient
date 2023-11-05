@@ -1,5 +1,6 @@
 package edu.maccosslab.panoramaclient;
 
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.labkey.remoteapi.CommandException;
 import org.labkey.remoteapi.CommandResponse;
 import org.labkey.remoteapi.Connection;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ClientActionImportSkyDoc extends ClientAction<ActionOptions.ImportSkyDoc>
@@ -19,51 +21,155 @@ public class ClientActionImportSkyDoc extends ClientAction<ActionOptions.ImportS
     @Override
     public boolean doAction(ActionOptions.ImportSkyDoc options) throws ClientException
     {
-        String skyDocPath = options.getSkyDocPath();
-
-        File file = new File(skyDocPath);
-        if(!file.exists())
-        {
-            throw new ClientException("Source file does not exist: " + skyDocPath);
-        }
-        if(!file.isFile())
-        {
-            throw new ClientException("Not a file " + skyDocPath);
-        }
-        if(!skyDocPath.toLowerCase().endsWith(".sky.zip"))
-        {
-            throw new ClientException("Not a Skyline shared zip file " + file.getName());
-        }
-
         String panoramaFolderUrl = options.getPanoramaFolderUrl();
+        String skyDocPathLocal = options.getSkyDocPathLocal();
+        String skyDocNameRemote = options.getSkyDocNameRemote();
+
         if(panoramaFolderUrl == null || panoramaFolderUrl.trim().length() == 0)
         {
             throw new ClientException("URL string cannot be empty");
         }
 
         LabKeyUrlParts labKeyUrlParts = URLHelper.buildLabKeyUrlParts(panoramaFolderUrl);
-
         Connection connection = getConnection(labKeyUrlParts.getServerUrl(), options.getApiKey());
 
-        uploadAndImport(labKeyUrlParts.getServerUrl(), labKeyUrlParts.getContainerPath(), options.getSkyDocPath(), connection);
+        WebdavUrlParts webdavUrlParts = null;
+        if (options.getWebdavUrl() != null)
+        {
+            webdavUrlParts = URLHelper.buildWebdavUrlParts(options.getWebdavUrl());
+            if (!labKeyUrlParts.getServerUrl().equals(webdavUrlParts.getServerUrl()))
+            {
+                throw new ClientException("Server in the Panorama folder URL and the WebDAV URL are not the same"
+                        + ". Server in the Panorama folder URL: " + labKeyUrlParts.getServerUrl()
+                        + ". Server in the WebDAV URL: " + webdavUrlParts.getServerUrl());
+            }
+            if (!labKeyUrlParts.getContainerPath().equals(webdavUrlParts.getContainerPath()))
+            {
+                throw new ClientException("Folder path in the Panorama folder URL and the WebDAV URL are not the same"
+                        + ". Folder path in the Panorama folder URL: " + labKeyUrlParts.getContainerPath()
+                        + ". Folder path in the WebDAV URL: " + webdavUrlParts.getContainerPath());
+            }
+        }
+        if (skyDocPathLocal != null)
+        {
+            uploadAndImport(labKeyUrlParts, skyDocPathLocal, webdavUrlParts, connection);
+        }
+        else if (skyDocNameRemote != null)
+        {
+            importDocumentOnServer(labKeyUrlParts, skyDocNameRemote.trim(), webdavUrlParts, connection);
+        }
+        else
+        {
+            throw new ClientException("Incomplete arguments. Path to a local Skyline document or a document in the Panorama folder is required.");
+        }
         return true;
     }
 
-    void uploadAndImport(String serverUri, String containerPath, String skyZipPath, Connection connection) throws ClientException
+    private void uploadAndImport(LabKeyUrlParts labKeyUrlParts, String skyZipPath, WebdavUrlParts webdavUrlParts, Connection connection) throws ClientException
     {
+        File file = new File(skyZipPath);
+        if (!file.exists())
+        {
+            throw new ClientException("Source file does not exist: " + skyZipPath);
+        }
+        if (!file.isFile())
+        {
+            throw new ClientException("Not a file " + skyZipPath);
+        }
+        if (!skyZipPath.toLowerCase().endsWith(".sky.zip"))
+        {
+            throw new ClientException("Not a Skyline shared zip file " + file.getName());
+        }
+
+        String serverUri = labKeyUrlParts.getServerUrl();
+        String containerPath = labKeyUrlParts.getContainerPath();
         LOG.info("Starting upload and import of Skyline document " + skyZipPath + " into Panorama folder '" + containerPath + "'");
 
         ClientActionUpload cmd = new ClientActionUpload();
-        cmd.uploadFile(new WebdavUrlParts(serverUri, containerPath, ""), skyZipPath, connection);
-        LOG.info("Uploaded Skyline document " + skyZipPath + " into Panorama folder " + containerPath);
+        WebdavUrlParts uploadToWebdavUrlParts = webdavUrlParts != null ? webdavUrlParts : new WebdavUrlParts(serverUri, containerPath, "");
+        cmd.uploadFile(uploadToWebdavUrlParts, skyZipPath, connection);
+        LOG.info("Uploaded Skyline document " + skyZipPath + " to " + uploadToWebdavUrlParts.combinePartsQuoted());
 
+        importSkylineDocument(labKeyUrlParts, new File(skyZipPath).getName(), getFolderRelativeSkyZipPath(uploadToWebdavUrlParts), connection);
+    }
+
+    private String getFolderRelativeSkyZipPath(WebdavUrlParts webdavUrlParts)
+    {
+        return "".equals(webdavUrlParts.getPathInFwp()) ? "./" : webdavUrlParts.getPathInFwp();
+    }
+
+    private void importDocumentOnServer(LabKeyUrlParts labKeyUrlParts, String skyDocNameRemote, WebdavUrlParts webdavUrlParts, Connection connection) throws ClientException
+    {
+        // URLEncodedUtils.parsePathSegments will decode percent encoded octets, but will not replace '+' with space character.
+        List<String> pathSegments = URLEncodedUtils.parsePathSegments(skyDocNameRemote);
+        skyDocNameRemote = pathSegments.size() > 0 ? pathSegments.get(0) : skyDocNameRemote;
+
+        if (!skyDocNameRemote.toLowerCase().endsWith(".sky.zip"))
+        {
+            throw new ClientException("Not a Skyline shared zip file " + skyDocNameRemote);
+        }
+
+        if (webdavUrlParts == null)
+        {
+            webdavUrlParts = new WebdavUrlParts(labKeyUrlParts.getServerUrl(), labKeyUrlParts.getContainerPath(), "");
+        }
+        WebdavUrlParts skyZipWebDavUrl = webdavUrlParts.appendToWebdavPath(skyDocNameRemote);
+        if (!documentExistsInPanoramaFolder(skyZipWebDavUrl, connection))
+        {
+            throw new ClientException("Skyline document does not exist: " + skyZipWebDavUrl.combinePartsQuoted());
+        }
+
+        LOG.info("Starting import of Skyline document " + skyDocNameRemote + " into Panorama folder '" + labKeyUrlParts.getContainerPath() + "'");
+        importSkylineDocument(labKeyUrlParts, skyDocNameRemote, getFolderRelativeSkyZipPath(webdavUrlParts), connection);
+    }
+
+//    private String getDecodedFileName(String skyDocNameRemote, LabKeyUrlParts urlParts) throws ClientException
+//    {
+//        // Plus sign "+" is converted into a space character "   " by URLDecoder. So an un-encoded file name like
+//        // CCS library+small.sky.zip will get 'decoded' to 'CCS library small.sky.zip'. URLDecoder (Encoder) should
+//        // be used on the query component, not the path component. Reserved characters are different in the path vs query.
+//        // return URLDecoder.decode(skyDocNameRemote, StandardCharsets.UTF_8);
+
+//        // Hacky way to make sure that we get a decoded name of the sky.zip file
+//        LabKeyUrlParts tempParts = URLHelper.buildLabKeyUrlParts(urlParts.getServerUrl() + "/" + skyDocNameRemote + "/controller-action.view");
+//        return tempParts.getContainerPath();
+//    }
+
+    private boolean documentExistsInPanoramaFolder(WebdavUrlParts webdavUrlParts, Connection connection) throws ClientException
+    {
+        WebDavCommand.CheckWebdavPathExists cmd = new WebDavCommand.CheckWebdavPathExists();
+        try
+        {
+            CommandResponse response = cmd.check(connection, webdavUrlParts.getContainerPath(), webdavUrlParts.getPathInFwp());
+            if (response.getStatusCode() != 200)
+            {
+                return false;
+            }
+        }
+        catch (IOException | CommandException e)
+        {
+            if(e instanceof CommandException && ((CommandException)e).getStatusCode() == 404)
+            {
+                return false;
+            }
+            throw new ClientException("Error checking if Skyline document exists: "
+                    + webdavUrlParts.combinePartsQuoted()
+                    + ". Error was: " + e.getMessage(), e);
+        }
+        return true;
+    }
+
+    private void importSkylineDocument(LabKeyUrlParts labKeyUrlParts, String skyZipName, String skyZipServerPath, Connection connection) throws ClientException
+    {
         PostCommand<CommandResponse> importCmd = new PostCommand<>("targetedms", "skylineDocUploadApi");
         Map<String, Object> params = new HashMap<>();
-        params.put("path", "./");
-        params.put("file", new File(skyZipPath).getName());
+        params.put("path", skyZipServerPath);
+        params.put("file", skyZipName);
         importCmd.setParameters(params);
 
         Long jobId;
+        String serverUri = labKeyUrlParts.getServerUrl();
+        String containerPath = labKeyUrlParts.getContainerPath();
         try
         {
             LOG.info("Starting Skyline document import");

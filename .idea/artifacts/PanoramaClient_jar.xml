@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PanoramaClient:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PanoramaClient_jar</output-path>
+    <root id="archive" name="PanoramaClient.jar">
+      <element id="library" level="project" name="labkey-client-api-1.5.0-all" />
+      <element id="module-output" name="PanoramaClient" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/commons-cli-1.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/log4j-1.2.17.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

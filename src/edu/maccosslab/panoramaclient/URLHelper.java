@@ -1,6 +1,5 @@
 package edu.maccosslab.panoramaclient;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -25,8 +24,8 @@ public class URLHelper
 
         if(!path.startsWith(WEBDAV))
         {
-            String pathMsg = path.length() > 0 ? ". Found path: \'" + path + "\'" : ". Found empty path";
-            pathMsg += " in url \'" + url + "\'";
+            String pathMsg = path.length() > 0 ? ". Found path: '" + path + "'" : ". Found empty path";
+            pathMsg += " in url '" + url + "'";
             throw new ClientException("Expect WebDAV URL path to start with " + WEBDAV + pathMsg);
         }
 
@@ -42,12 +41,12 @@ public class URLHelper
             throw new ClientException("Expect WebDAV URL path to contain " + FILE_ROOT);
         }
 
-        String containerPath = removeBeginningAndTralingSlash(path.substring(WEBDAV.length(), idx));
+        String containerPath = removeBeginningAndTrailingSlash(path.substring(WEBDAV.length(), idx));
         if(containerPath.length() == 0)
         {
-            throw new ClientException("Container path is empty in url \'" + url + "\'");
+            throw new ClientException("Container path is empty in url '" + url + "'");
         }
-        String pathInFwp = removeBeginningAndTralingSlash(path.substring(idx + fileRoot.length()));
+        String pathInFwp = removeBeginningAndTrailingSlash(path.substring(idx + fileRoot.length()));
 
         return new WebdavUrlParts(serverUrl, containerPath, pathInFwp);
     }
@@ -70,14 +69,21 @@ public class URLHelper
         URI uri;
         try
         {
-            uri = new URI(url); // This will throw an exception if there are spaces in the string, for example
+            // This will throw an exception if the url string contains unescaped illegal characters.
+            // Examples: space character, '%' that is not part of an encoded octet (e.g. %20), delimiter characters '[' and ']'
+            // If the path part of the url string contains unencoded '#' or '?'characters, no exception will be thrown
+            // but the parsed path component of the URI will be truncated since '#' indicates the beginning of the
+            // fragment component, and '?' indicates the beginning of the query component.
+            uri = new URI(url);
         }
         catch(URISyntaxException e)
         {
             try
             {
                 URL fullUrl = new URL(url);
-                uri = new URI(fullUrl.getProtocol(), fullUrl.getUserInfo(), fullUrl.getHost(), fullUrl.getPort(), fullUrl.getPath(), fullUrl.getQuery(), null);
+                uri = new URI(fullUrl.getProtocol(), fullUrl.getUserInfo(), fullUrl.getHost(), fullUrl.getPort(),
+                        fullUrl.getPath(),
+                        fullUrl.getQuery(), null);
             }
             catch(Exception ex)
             {
@@ -118,13 +124,13 @@ public class URLHelper
         // New URL pattern  <protocol>://<domain>/<contextpath>/<containerpath>/<controller>-<action>
         // Old URL pattern  <protocol>://<domain>/<contextpath>/<controller>/<containerpath>/<action>
 
-        String path = getPathWithoutContext(uri.getPath());
-        path = removeBeginningAndTralingSlash(path);
+        String path = getPathWithoutContext(uri.getPath()); // URI.getPath() returns the decoded path component
+        path = removeBeginningAndTrailingSlash(path);
 
         int idx = path.lastIndexOf("/");
         if(idx == -1)
         {
-            String message = path.length() > 0 ? "Cannot parse container path from \'" + path + "\'" : "Path is empty";
+            String message = path.length() > 0 ? "Cannot parse container path from '" + path + "'" : "Path is empty";
             throw new ClientException(message);
         }
 
@@ -138,12 +144,12 @@ public class URLHelper
             idx = containerPath.indexOf("/");
             if(idx == -1 || idx == containerPath.length() - 1)
             {
-                throw new ClientException("Cannot remove controller name from container path \'" + containerPath + "\'");
+                throw new ClientException("Cannot remove controller name from container path '" + containerPath + "'");
             }
             containerPath = containerPath.substring(idx + 1);
         }
 
-        return removeBeginningAndTralingSlash(containerPath);
+        return removeBeginningAndTrailingSlash(containerPath);
     }
 
     private static String getPathWithoutContext(String path)
@@ -159,7 +165,7 @@ public class URLHelper
         return path == null ? "" : path;
     }
 
-    private static String removeBeginningAndTralingSlash(String path)
+    private static String removeBeginningAndTrailingSlash(String path)
     {
         path = removeBeginningSlash(path);
         path = removeTrailingSlash(path);
@@ -168,18 +174,18 @@ public class URLHelper
 
     private static String removeBeginningSlash(String path)
     {
-        if (path.startsWith("/"))
+        if (path != null && path.startsWith("/"))
         {
-            path = path.length() > 0 ? path.substring(1) : "";
+            path = path.substring(1);
         }
         return path;
     }
 
     private static String removeTrailingSlash(String path)
     {
-        if (path.endsWith("/"))
+        if (path != null && path.endsWith("/"))
         {
-            path = path.length() > 0 ? path.substring(0, path.length() - 1) : "";
+            path = path.substring(0, path.length() - 1);
         }
         return path;
     }

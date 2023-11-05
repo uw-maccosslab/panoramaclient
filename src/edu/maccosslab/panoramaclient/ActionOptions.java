@@ -16,7 +16,7 @@ public abstract class ActionOptions
 
     public abstract ClientAction getAction();
 
-    static abstract class WebdavActionOptions<T extends ClientAction> extends ActionOptions
+    static abstract class WebdavActionOptions extends ActionOptions
     {
         private String webdavUrl;
 
@@ -147,19 +147,30 @@ public abstract class ActionOptions
         }
     }
 
-    public static class ImportSkyDoc extends ActionOptions
+    public static class ImportSkyDoc extends WebdavActionOptions
     {
-        private String skyDocPath;
+        private String skyDocPathLocal;
         private String panoramaFolderUrl;
+        private String skyDocNameRemote;
 
-        public String getSkyDocPath()
+        public String getSkyDocPathLocal()
         {
-            return skyDocPath;
+            return skyDocPathLocal;
         }
 
-        public void setSkyDocPath(String skyDocPath)
+        public void setSkyDocPathLocal(String skyDocPathLocal)
         {
-            this.skyDocPath = skyDocPath;
+            this.skyDocPathLocal = skyDocPathLocal;
+        }
+
+        public String getSkyDocNameRemote()
+        {
+            return skyDocNameRemote;
+        }
+
+        public void setSkyDocNameRemote(String skyDocNameRemote)
+        {
+            this.skyDocNameRemote = skyDocNameRemote;
         }
 
         public String getPanoramaFolderUrl()

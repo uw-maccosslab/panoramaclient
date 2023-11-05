@@ -6,90 +6,37 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="507b2f46-442a-434a-824b-3b504d35fc9d" name="Default Changelist" comment="" />
-    <ignored path="$PROJECT_DIR$/out/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <list default="true" id="507b2f46-442a-434a-824b-3b504d35fc9d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/labkey_client_api_1_5_0_all.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/labkey_client_api_1_0_1_SNAPSHOT_all.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PanoramaClient.iml" beforeDir="false" afterPath="$PROJECT_DIR$/PanoramaClient.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/ActionOptions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/ActionOptions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/CLOptionsGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/CLOptionsGroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/ClientAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/ClientAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/ClientActionImportSkyDoc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/ClientActionImportSkyDoc.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/ClientActionListFiles.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/ClientActionListFiles.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/URLHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/URLHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/WebDavCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/WebDavCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/test/CLParserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/test/CLParserTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/test/URLHelperTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/test/URLHelperTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="-480586556">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.open.time.2" value="1" />
-          <entry key="project.opened" value="1" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="MF" value="1" />
-          <entry key="java" value="6" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="JAVA" value="6" />
-          <entry key="Manifest" value="1" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
-  <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/ActionOptions.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/test/CLParserTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="10" column="7" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/ClientAction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="484">
-              <caret line="32" column="36" selection-start-line="32" selection-start-column="36" selection-end-line="32" selection-end-column="36" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/test/URLHelperTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="23" column="61" selection-start-line="23" selection-start-column="61" selection-end-line="23" selection-end-column="61" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/PanoramaClient.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="34" column="9" selection-start-line="34" selection-start-column="9" selection-end-line="34" selection-end-column="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -110,6 +57,7 @@
     <option name="width" value="1591" />
     <option name="height" value="1047" />
   </component>
+  <component name="ProjectId" id="2XEHvGINV4TNsp57O5BqDWfeWjc" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -146,37 +94,31 @@
       <pane id="Scope" />
     </panes>
   </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1591067949031" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/log4j-1.2.17.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/labkey-client-api-1.5.0-all.jar" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
+    <property name="project.structure.side.proportion" value="0.50093806" />
   </component>
   <component name="RunManager" selected="Application.PanoramaClient">
     <configuration name="PanoramaClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="edu.maccosslab.panoramaclient.PanoramaClient" />
       <module name="PanoramaClient" />
-      <option name="PROGRAM_PARAMETERS" value="-l -w &quot;https://panoramaweb-dr.gs.washington.edu/_webdav/00Developer/vsharma/PanoramaClientTest/%40files&quot; -k apikey|39c9175feea84621d1002b569cac9289" />
+      <option name="PROGRAM_PARAMETERS" value="-i -p http://localhost:8080/labkey/TestProject/Panorama%20Client/project-begin.view -k a5174436c41b999d5afd615fe7cfd7e03bcfd4904e19a9541e8538513a44c4" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="edu.maccosslab.panoramaclient.*" />
@@ -187,7 +129,18 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CLParserTest.testParseCommandLine" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CLParserTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="PanoramaClient" />
       <extension name="coverage">
         <pattern>
@@ -197,8 +150,22 @@
       </extension>
       <option name="PACKAGE_NAME" value="edu.maccosslab.panoramaclient.test" />
       <option name="MAIN_CLASS_NAME" value="edu.maccosslab.panoramaclient.test.CLParserTest" />
-      <option name="METHOD_NAME" value="testParseCommandLine" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="URLHelperTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="PanoramaClient" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.maccosslab.panoramaclient.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="edu.maccosslab.panoramaclient.test" />
+      <option name="MAIN_CLASS_NAME" value="edu.maccosslab.panoramaclient.test.URLHelperTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -219,19 +186,40 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="URLHelperTest.testGetWebdavPathParts" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="PanoramaClient" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.maccosslab.panoramaclient.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="edu.maccosslab.panoramaclient.test" />
+      <option name="MAIN_CLASS_NAME" value="edu.maccosslab.panoramaclient.test.URLHelperTest" />
+      <option name="METHOD_NAME" value="testGetWebdavPathParts" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.PanoramaClient" />
-      <item itemvalue="JUnit.CLParserTest.testParseCommandLine" />
       <item itemvalue="JUnit.URLHelperTest.testBuildUrlParts" />
+      <item itemvalue="JUnit.CLParserTest" />
+      <item itemvalue="JUnit.URLHelperTest" />
+      <item itemvalue="JUnit.URLHelperTest.testGetWebdavPathParts" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.PanoramaClient" />
+        <item itemvalue="JUnit.URLHelperTest" />
+        <item itemvalue="JUnit.CLParserTest" />
+        <item itemvalue="JUnit.URLHelperTest.testGetWebdavPathParts" />
         <item itemvalue="JUnit.URLHelperTest.testBuildUrlParts" />
-        <item itemvalue="JUnit.CLParserTest.testParseCommandLine" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -243,6 +231,9 @@
       <option name="presentableId" value="Default" />
       <updated>1591065089792</updated>
       <workItem from="1591065092814" duration="2797000" />
+      <workItem from="1698187550180" duration="27454000" />
+      <workItem from="1698698955466" duration="636000" />
+      <workItem from="1698857690997" duration="10964000" />
     </task>
     <servers />
   </component>
@@ -297,10 +288,103 @@
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/PanoramaClient.java</url>
+          <line>122</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/CLOptionsGroup.java</url>
+          <line>263</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/test/CLParserTest.java</url>
+          <line>89</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/URLHelper.java</url>
+          <line>80</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/../../../../../../../Program Files/Java/jdk-12/lib/src.zip!/java.base/java/net/URI.java</url>
+          <line>2048</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/test/URLHelperTest.java</url>
+          <line>35</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/../../../../../../../Program Files/Java/jdk-12/lib/src.zip!/java.base/java/net/URI.java</url>
+          <line>3147</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/ClientActionImportSkyDoc.java</url>
+          <line>135</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/ClientActionImportSkyDoc.java</url>
+          <line>89</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/WebdavUrlParts.java</url>
+          <line>23</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/WebDavCommand.java</url>
+          <line>300</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/WebDavCommand.java</url>
+          <line>306</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/WebDavCommand.java</url>
+          <line>72</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/lib/labkey-client-api-1.5.0-all.jar!/org/apache/http/client/utils/URLEncodedUtils.class</url>
+          <line>222</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/URLHelper.java</url>
+          <line>61</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/URLHelper.java</url>
+          <line>19</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/ClientActionImportSkyDoc.java</url>
+          <line>114</line>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/ClientActionImportSkyDoc.java</url>
+          <line>110</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/edu/maccosslab/panoramaclient/ActionOptions.java">
