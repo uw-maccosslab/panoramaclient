@@ -1,6 +1,7 @@
 package edu.maccosslab.panoramaclient;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -145,6 +146,7 @@ public abstract class WebDavCommand<ResponseType extends CommandResponse> extend
             HttpPost request = new HttpPost(uri);
             HttpEntity multipartEntity = MultipartEntityBuilder.create().addBinaryBody("file", new File(_sourceFilePath)).build();
             request.setEntity(multipartEntity);
+            request.setConfig(RequestConfig.copy(RequestConfig.DEFAULT).setSocketTimeout(0).build());
             return request;
         }
     }
